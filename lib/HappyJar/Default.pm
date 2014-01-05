@@ -7,4 +7,9 @@ sub index {
   $self->render(text => "Hello world!");
 }
 
+sub env {
+  my $self = shift;
+  $self->render(inline => '<pre><%= dumper $self->tx->req %></pre>');
+}
+
 1;

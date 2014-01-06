@@ -18,10 +18,14 @@ sub handle_login {
 
     my ($name, $pass) = $self->param(['name', 'password']);
 
-    my $user;
-
     try {
-        $user = HappyJar::Auth::get_user($name, $pass);
+        my $user = HappyJar::Auth::get_user($name, $pass);
+
+        # set a cookie, expires in a week
+        $self->signed_cookie(user => $user->name, {
+            expires => time + (60 * 60 * 24 * 7),
+        });
+
         $self->render(text => $user->name);
     } catch {
         my $msg = '';
@@ -32,8 +36,6 @@ sub handle_login {
 
         $self->render(text => "caught error: $msg");
     };
-
-
 }
 
 sub env {

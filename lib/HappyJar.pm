@@ -6,6 +6,8 @@ use v5.10;
 sub startup {
     my $self = shift;
 
+    $self->secrets(['Oh, happiest of jars!']);
+
     $self->hook(before_dispatch => \&redirect_to_https);
 
     # Router

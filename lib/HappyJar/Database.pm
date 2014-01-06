@@ -81,6 +81,24 @@ sub get_user_data_for {
     return $data->{name}, $data->{email}, $data->{password};
 }
 
+=item get_num_memories
+
+Returns the number of memories in the database.
+
+=cut
+
+sub get_num_memories {
+    my $self = shift;
+    $self->connect();
+
+    my $query = q{SELECT COUNT(*) FROM memories};
+    my $sth = $dbh->prepare($query);
+    $sth->execute();
+
+    return $sth->fetchrow_arrayref->[0];
+}
+
+
 =item insert_memory
 
 Passed a user, date, and memory (in that order), inserts memory into the

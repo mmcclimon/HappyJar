@@ -1,0 +1,7 @@
+% layout 'default';
+% title 'Happy Jar - Success!';
+
+<h2>Error!</h2>
+
+<p>Reason: <%= flash 'msg' %></p>
+

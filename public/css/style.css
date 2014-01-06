@@ -1,0 +1,61 @@
+@import url(http://fonts.googleapis.com/css?family=Monda:400);
+@import url(http://fonts.googleapis.com/css?family=Paprika);
+
+body { background-color: #E0F2F7; }
+
+body, form, select, option {
+    font-family: 'Monda', Helvetica, Arial, sans-serif;
+}
+
+textarea {
+    font-family: 'Monda', Helvetica, Arial, sans-serif;
+    font-size: 110%;
+}
+
+input[type='text'], input[type='password'] {
+    font-size: 100%;
+    padding: .5em;
+}
+
+#mem {  background-color: #fff; padding: 1.5em; width: 50%; }
+#charsLeft { color: #aaa; vertical-align: 4px; }
+
+h1 { font-family: 'Paprika'; }
+.small { font-size: 85%; margin-left: 2em; }
+.monda { font-family: 'Monda'; }
+
+table, tr, td {
+    border: 1px solid black;
+    padding: .5em;
+    border-collapse: collapse;
+}
+
+.button {
+    -moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;
+    -webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;
+    box-shadow:inset 0px 1px 0px 0px #97c4fe;
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0) );
+    background:-moz-linear-gradient( center top, #3d94f6 5%, #1e62d0 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0');
+    background-color:#3d94f6;
+    -moz-border-radius:11px;
+    -webkit-border-radius:11px;
+    border-radius:11px;
+    border:1px solid #337fed;
+    display:inline-block;
+    color:#ffffff;
+    font-family: Monda, 'Trebuchet MS', Helvetica, Arial, sans-serif;
+    font-size:17px;
+    font-weight:normal;
+    padding:14px 24px;
+    text-decoration:none;
+}.button:hover {
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #1e62d0), color-stop(1, #3d94f6) );
+    background:-moz-linear-gradient( center top, #1e62d0 5%, #3d94f6 100% );
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e62d0', endColorstr='#3d94f6');
+    background-color:#1e62d0;
+}.button:active {
+    position:relative;
+    top:1px;
+}
+

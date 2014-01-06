@@ -11,6 +11,8 @@ sub index {
     my $self = shift;
     my $user = $self->_ensure_logged_in();
 
+    my $num_memories = HappyJar::Database->get_num_memories();
+
     # figure out the month and day, used in select_field helpers
     my @months = (
         [Jan => '01'], [Feb => '02'], [Mar => '03'], [Apr => '04'],
@@ -24,6 +26,7 @@ sub index {
     push @{$months[$month]}, 'selected' => 'selected';
     $days[$mday - 1] = [$mday => $mday, 'selected' => 'selected'];
 
+    $self->stash(num_memories => $num_memories);
     $self->stash(months => \@months);
     $self->stash(days => \@days);
     $self->render();
@@ -48,8 +51,7 @@ sub memory {
 }
 
 sub memory_success { shift->render(); }
-
-# render login template
+sub error { shift->render(); }
 sub login { shift->render(); }
 
 # gets two POST parameters: 'name' and 'password'
@@ -79,11 +81,13 @@ sub handle_login {
     } catch {
         my $msg = '';
 
-        if    (/bad password/)        { $msg = 'bad password'; }
-        elsif (/user does not exist/) { $msg = 'bad user'; }
+        if    (/bad password/)        { $msg = 'Incorrect password'; }
+        elsif (/user does not exist/) { $msg = 'User does not exist.'; }
         else { $msg = $_; }
 
-        $self->render(text => "caught error: $msg");
+        $self->flash(msg => $msg);
+        $self->res->code(403);
+        $self->redirect_to('/error');
     };
 }
 

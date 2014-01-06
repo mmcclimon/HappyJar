@@ -14,11 +14,11 @@ sub startup {
     my $r = $self->routes;
 
     $r->get('/')->to('controller#index');
-    $r->get('/env')->to('controller#env');
     $r->get('/login')->to('controller#login');
     $r->post('/login')->to('controller#handle_login');
     $r->post('/new')->to('controller#memory');
     $r->get('/success')->to('controller#memory_success');
+    $r->get('/error')->to('controller#error')
 }
 
 sub redirect_to_https {

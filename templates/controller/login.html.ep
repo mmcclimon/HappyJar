@@ -6,6 +6,6 @@
 <form action="/login" method="post">
     <p>Name:<br/><input type="text" name="name" /></p>
     <p>Password:<br/><input type="password" name="password" /></p>
-    <input type="submit" value="Log in" />
+    <input class="button" type="submit" value="Log in" />
 </form>
 

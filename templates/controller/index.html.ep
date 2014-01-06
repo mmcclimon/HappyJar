@@ -1,15 +1,22 @@
 % layout 'default';
 % title 'Happy Jar';
 
-<h2>Happy Jar</h2>
+<p>Put a memory in the jar...<%= $num_memories %> happy thoughts so far!</p>
 
 <form action="/new" method="post">
 
-    <%= select_field month => $months %>
-    <%= select_field day => $days %>
+    <%= select_field month => $months, class => 'dk' %>
+    <%= select_field day => $days, class => 'dk' %>
+    <span class="small">(defaults to today)
 
-    <p>Memory:<br/><input type="text" name="memory" /></p>
-    <input type="submit" value="Submit" />
+    <br/><br/>
+
+    <%= text_area 'memory', cols => 40, rows => 8, id => 'memoryArea' %>
+    <span id="charsLeft">1000</span>
+
+    <br/><br/>
+
+    <input class="button" type="submit" value="Put it in the jar" />
 
 </form>
 

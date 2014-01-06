@@ -1,8 +1,10 @@
 % layout 'default';
 % title 'Happy Jar - Success!';
 
-<h2>Happy Jar</h2>
+<h2>Success!</h2>
 
-<p>Success! Here is your memory:</p>
+<p>You put the following memory in the jar:</p>
 <p><%= flash 'memory' %></p>
+
+<p><a href="/">Add another</a></p>
 

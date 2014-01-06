@@ -14,3 +14,4 @@ requires 'IO::Prompter', '0';
 requires 'Moo', '1.0';
 requires 'namespace::clean', '0';
 requires 'Try::Tiny', '0';
+requires 'DateTime', '1.0';

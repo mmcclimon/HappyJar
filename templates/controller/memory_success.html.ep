@@ -1,0 +1,8 @@
+% layout 'default';
+% title 'Happy Jar - Success!';
+
+<h2>Happy Jar</h2>
+
+<p>Success! Here is your memory:</p>
+<p><%= flash 'memory' %></p>
+

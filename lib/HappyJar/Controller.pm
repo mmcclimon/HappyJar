@@ -1,19 +1,58 @@
 package HappyJar::Controller;
 use Mojo::Base 'Mojolicious::Controller';
 
-use HappyJar::User;
+use HappyJar::Database;
 use Try::Tiny;
+use DateTime;
+
+# private var
+my $dbh;
 
 # This action will render a template
 sub index {
     my $self = shift;
     my $user = $self->_ensure_logged_in();
 
-    $user = ucfirst $user;
-    $self->render(text => "Hello $user!");
+    # figure out the month and day, used in select_field helpers
+    my @months = (
+        [Jan => '01'], [Feb => '02'], [Mar => '03'], [Apr => '04'],
+        [May => '05'], [Jun => '06'], [Jul => '07'], [Aug => '08'],
+        [Sep => '09'], [Oct => '10'], [Nov => '11'], [Dec => '12'],
+    );
+    my @days = (1..31);
+
+    # add selected attributes
+    my ($mday, $month) = (localtime(time))[3..4];
+    push @{$months[$month]}, 'selected' => 'selected';
+    $days[$mday - 1] = [$mday => $mday, 'selected' => 'selected'];
+
+    $self->stash(months => \@months);
+    $self->stash(days => \@days);
+    $self->render();
 }
 
-sub login { 'login'; }
+# handles action for posting a new memory to the happy jar
+# gets params 'date' and 'memory'
+sub memory {
+    my $self = shift;
+    my $user = $self->_ensure_logged_in();
+
+    my ($month, $day, $memory) = $self->param(['month', 'day', 'memory']);
+
+    # format date: yyyy-mm-dd
+    my $date = DateTime->new(year => 2014, month => $month, day => $day,
+        time_zone => 'America/Indianapolis')->ymd;
+
+    _insert_memory($user, $date, $memory);
+
+    $self->flash(memory => $memory);
+    $self->redirect_to('/success');
+}
+
+sub memory_success { shift->render(); }
+
+# render login template
+sub login { shift->render(); }
 
 # gets two POST parameters: 'name' and 'password'
 sub handle_login {
@@ -61,6 +100,20 @@ sub _ensure_logged_in {
 
     $self->session(redir => $path);
     $self->redirect_to('/login');
+}
+
+sub _insert_memory {
+    my ($user, $date, $memory) = @_;
+
+    # the database actually just wants the first character as the name
+    $user = substr $user, 0, 1;
+
+    $dbh ||= HappyJar::Database::connect();
+    my $query = q{INSERT INTO memories (name, date, memory) VALUES (?, ?, ?)};
+    my $sth = $dbh->prepare($query);
+    $sth->execute($user, $date, $memory);
+
+    return $memory;
 }
 
 1;

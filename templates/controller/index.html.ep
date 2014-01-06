@@ -1,0 +1,15 @@
+% layout 'default';
+% title 'Happy Jar';
+
+<h2>Happy Jar</h2>
+
+<form action="/new" method="post">
+
+    <%= select_field month => $months %>
+    <%= select_field day => $days %>
+
+    <p>Memory:<br/><input type="text" name="memory" /></p>
+    <input type="submit" value="Submit" />
+
+</form>
+

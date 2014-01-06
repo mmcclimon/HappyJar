@@ -9,3 +9,8 @@ requires 'DBD::Pg', '1.3';
 # cli
 requires 'Term::ReadKey', '0';
 requires 'IO::Prompter', '0';
+
+# misc.
+requires 'Moo', '1.0';
+requires 'namespace::clean', '0';
+requires 'Try::Tiny', '0';

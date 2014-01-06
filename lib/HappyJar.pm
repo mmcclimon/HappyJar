@@ -13,6 +13,8 @@ sub startup {
 
     $r->get('/')->to('default#index');
     $r->get('/env')->to('default#env');
+    $r->get('/login')->to('default#login');
+    $r->post('/login')->to('default#handle_login');
 }
 
 sub redirect_to_https {

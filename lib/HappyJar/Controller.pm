@@ -1,4 +1,4 @@
-package HappyJar::Default;
+package HappyJar::Controller;
 use Mojo::Base 'Mojolicious::Controller';
 
 use HappyJar::User;

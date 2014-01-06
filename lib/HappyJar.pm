@@ -11,10 +11,10 @@ sub startup {
     # Router
     my $r = $self->routes;
 
-    $r->get('/')->to('default#index');
-    $r->get('/env')->to('default#env');
-    $r->get('/login')->to('default#login');
-    $r->post('/login')->to('default#handle_login');
+    $r->get('/')->to('controller#index');
+    $r->get('/env')->to('controller#env');
+    $r->get('/login')->to('controller#login');
+    $r->post('/login')->to('controller#handle_login');
 }
 
 sub redirect_to_https {

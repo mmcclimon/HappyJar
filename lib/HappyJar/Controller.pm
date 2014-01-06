@@ -1,12 +1,10 @@
 package HappyJar::Controller;
 use Mojo::Base 'Mojolicious::Controller';
 
+use HappyJar::Auth;
 use HappyJar::Database;
 use Try::Tiny;
 use DateTime;
-
-# private var
-my $dbh;
 
 # This action will render a template
 sub index {
@@ -43,7 +41,7 @@ sub memory {
     my $date = DateTime->new(year => 2014, month => $month, day => $day,
         time_zone => 'America/Indianapolis')->ymd;
 
-    _insert_memory($user, $date, $memory);
+    $memory = HappyJar::Database->insert_memory($user, $date, $memory);
 
     $self->flash(memory => $memory);
     $self->redirect_to('/success');
@@ -100,20 +98,6 @@ sub _ensure_logged_in {
 
     $self->session(redir => $path);
     $self->redirect_to('/login');
-}
-
-sub _insert_memory {
-    my ($user, $date, $memory) = @_;
-
-    # the database actually just wants the first character as the name
-    $user = substr $user, 0, 1;
-
-    $dbh ||= HappyJar::Database::connect();
-    my $query = q{INSERT INTO memories (name, date, memory) VALUES (?, ?, ?)};
-    my $sth = $dbh->prepare($query);
-    $sth->execute($user, $date, $memory);
-
-    return $memory;
 }
 
 1;

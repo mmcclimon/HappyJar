@@ -59,4 +59,47 @@ sub connect {
     });
 }
 
+=item get_user_data_for
+
+Retrieve user name, email, and password hash from database, given a user name.
+Returns 0 for all elements if user does not exist in database.
+
+=cut
+
+sub get_user_data_for {
+    my ($self, $name) = @_;
+    $self->connect();
+
+    my $sth = $dbh->prepare(q{SELECT * FROM users WHERE name = ?});
+    $sth->execute($name);
+
+    if ($sth->rows == 0) {
+        return 0, 0, 0;
+    }
+
+    my $data = $sth->fetchrow_hashref();
+    return $data->{name}, $data->{email}, $data->{password};
+}
+
+=item insert_memory
+
+Passed a user, date, and memory (in that order), inserts memory into the
+database. Returns memory on success, dies on error.
+
+=cut
+
+sub insert_memory {
+    my ($self, $user, $date, $memory) = @_;
+    $self->connect();
+
+    # the database actually just wants the first character as the name
+    $user = substr $user, 0, 1;
+
+    my $query = q{INSERT INTO memories (name, date, memory) VALUES (?, ?, ?)};
+    my $sth = $dbh->prepare($query);
+    $sth->execute($user, $date, $memory);
+
+    return $memory;
+}
+
 1;

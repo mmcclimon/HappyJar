@@ -28,6 +28,8 @@ sub connect {
     return $dbh if $dbh;
 
     my $db_url = $ENV{DATABASE_URL};
+    die "DATABASE_URL not defined" unless defined $db_url;
+
     my ($user, $pass, $host, $port, $dbname) =
         $db_url =~ m{postgres://
                      (.+?)      # username: anything, followed by colon
@@ -51,7 +53,10 @@ sub connect {
     my $conn_string = "dbi:Pg:dbname=$dbname;host=$host";
     $conn_string .= ";port=$port" if $port;
 
-    $dbh = DBI->connect($conn_string, $user, $pass);
+    $dbh = DBI->connect($conn_string, $user, $pass, {
+        RaiseError => 1,
+        AutoCommit => 1,
+    });
 }
 
 1;

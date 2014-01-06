@@ -7,7 +7,10 @@ use Try::Tiny;
 # This action will render a template
 sub index {
     my $self = shift;
-    $self->render(text => "Hello world!");
+    my $user = $self->_ensure_logged_in();
+
+    $user = ucfirst $user;
+    $self->render(text => "Hello $user!");
 }
 
 sub login { 'login'; }
@@ -26,7 +29,16 @@ sub handle_login {
             expires => time + (60 * 60 * 24 * 7),
         });
 
-        $self->render(text => $user->name);
+        # if user was redirected here this will be set, otherwise we can
+        # redirect to the home page
+        my $redir = $self->session('redir');
+
+        if ($redir) {
+            delete $self->session->{redir};
+            $self->redirect_to($redir);
+        } else {
+            $self->redirect_to('/');
+        }
     } catch {
         my $msg = '';
 
@@ -38,9 +50,17 @@ sub handle_login {
     };
 }
 
-sub env {
+# If user is logged in, returns their user name. If not, redirects to
+# login page and sets a session variable 'redir' with the current path.
+sub _ensure_logged_in {
     my $self = shift;
-    $self->render(inline => '<pre><%= dumper $self->tx->req %></pre>');
+    my $user = $self->signed_cookie('user');
+    return $user if $user;
+
+    my $path = $self->req->url->path;
+
+    $self->session(redir => $path);
+    $self->redirect_to('/login');
 }
 
 1;

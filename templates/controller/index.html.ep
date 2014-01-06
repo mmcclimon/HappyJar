@@ -17,6 +17,8 @@
     <br/><br/>
 
     <input class="button" type="submit" value="Put it in the jar" />
-
 </form>
+
+<p>&nbsp;</p>
+<p><a href="/contents">See the list!</a></p>
 

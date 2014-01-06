@@ -18,7 +18,8 @@ sub startup {
     $r->post('/login')->to('controller#handle_login');
     $r->post('/new')->to('controller#memory');
     $r->get('/success')->to('controller#memory_success');
-    $r->get('/error')->to('controller#error')
+    $r->get('/error')->to('controller#error');
+    $r->get('/contents')->to('controller#contents');
 }
 
 sub redirect_to_https {

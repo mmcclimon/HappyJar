@@ -1,0 +1,17 @@
+% layout 'default';
+% title 'Happy Jar';
+
+<p>Hooray! A whole year of happy thoughts!<p>
+
+<table>
+    % for my $row (@{$memories}) {
+    <tr>
+        <td><%=ucfirst $row->[0]%></td>
+        <td><%=$row->[1]%></td>
+        <td><%=$row->[2]%></td>
+    </tr>
+    % }
+</table>
+
+<p><a href="/">Back home</a></p>
+

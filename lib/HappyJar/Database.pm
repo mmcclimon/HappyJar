@@ -120,4 +120,22 @@ sub insert_memory {
     return $memory;
 }
 
+=item get_all_memories
+
+Retrieves all memories from database and returns the whole thing and returns
+them all in a big arrayref, with columns 'name', 'date', and 'memory'.
+
+=cut
+
+sub get_all_memories {
+    my $self = shift;
+    $self->connect();
+
+    my $sth = $dbh->prepare(q{SELECT name, date, memory FROM memories});
+    $sth->execute();
+
+    return $sth->fetchall_arrayref();
+}
+
+
 1;

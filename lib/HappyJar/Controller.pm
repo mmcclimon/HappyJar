@@ -91,6 +91,21 @@ sub handle_login {
     };
 }
 
+# If it's still 2014, no dice. Otherwise print out a list of the memories.
+sub contents {
+    my $self = shift;
+
+    my $year = (localtime)[5] + 1900;
+
+    if ($year == 2014) {
+        $self->render(template => 'controller/not_yet');
+    } else {
+        my $memories = HappyJar::Database->get_all_memories();
+        $self->stash(memories => $memories);
+        $self->render(template => 'controller/contents');
+    }
+}
+
 # If user is logged in, returns their user name. If not, redirects to
 # login page and sets a session variable 'redir' with the current path.
 sub _ensure_logged_in {

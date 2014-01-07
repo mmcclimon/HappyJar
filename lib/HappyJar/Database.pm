@@ -140,18 +140,25 @@ sub get_all_memories {
 
 =item get_last_date_for
 
-Returns latest date for a given user initial ('m' or 'c').
+Returns user data in an arrayref, with columns 'name', 'email', and 'date'.
 
 =cut
 
-sub get_last_date_for {
-    my ($self, $name) = @_;
+sub get_last_dates {
+    my ($self) = @_;
     $self->connect();
 
-    my $sth = $dbh->prepare(q{SELECT MAX(date) FROM memories WHERE name = ?});
-    $sth->execute($name);
+    my $q = q{
+        SELECT u.name, u.email, max(m.date) AS date
+        FROM users u INNER JOIN memories m
+        ON u.name = m.name
+        GROUP BY u.name
+    };
 
-    return $sth->fetchrow_arrayref->[0];
+    my $sth = $dbh->prepare($q);
+    $sth->execute();
+
+    return $sth->fetchall_arrayref();
 }
 
 

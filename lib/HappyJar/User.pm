@@ -23,13 +23,21 @@ seemed like there should be one, so there is.
 
 =cut
 
-has 'name'  => ( is => 'ro');
+has 'name'  => (is => 'ro', required => 1);
 
 =item email
 
 =cut
 
-has 'email' => ( is => 'ro');
+has 'email' => (is => 'ro', required => 1);
+
+=item last_entry_date
+
+A user may or may not have one of these.
+
+=cut
+
+has 'last_entry_date' => (is => 'ro' );
 
 1;
 

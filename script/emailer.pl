@@ -5,11 +5,7 @@ use strict;
 =head1 README
 
 This is a script that sends a user an email if it's been more than 4 days
-since they last put a memory into the happy jar. It works well, but only
-because we're only dealing with two users (it's highly inefficient).
-
-A better way to do this would be to get all of the users and dates in one
-database call, but at most we're making 4, so I don't care.
+since they last put a memory into the happy jar.
 
 =cut
 
@@ -20,14 +16,12 @@ use HappyJar::Emailer;
 use DateTime;
 
 # private variables
-my $db = 'HappyJar::Database';
 my $emailer = HappyJar::Emailer->new();
 
 main();
 
 sub main {
-    # get the users (manually)
-    my @users = (get_user('michael'), get_user('carolyn'));
+    my @users = get_users();
 
     # loop through, sending email if needed
     for my $user (@users) {
@@ -44,23 +38,30 @@ sub main {
     }
 }
 
-# Retrieve a HappyJar::User object from the database given user name
-sub get_user {
-    my $user = shift;
-    my ($name, $email, undef) = $db->get_user_data_for($user);
-    return unless $name;
+# Retrieve an array of HappyJar::User objects from the database.
+sub get_users {
+    my @users;
 
-    my $u = HappyJar::User->new(name => $name, email => $email);
-    return $u;
+    my $data = HappyJar::Database->get_last_dates();
+    for my $row (@$data) {
+        my ($name, $email, $date) = @$row;
+        next unless $name;
+        push @users, HappyJar::User->new(
+            name => $name,
+            email => $email,
+            last_entry_date => $date,
+        );
+    }
+
+    return @users;
 }
 
 # Returns number of days since param $user last submitted to happy jar.
 sub get_last_memory_delta {
     my $user = shift;
-    my $date = $db->get_last_date_for($user->name);
 
     # make a DateTime from the last date user posted
-    my ($y, $m, $d) = $date =~ m/(\d{4})-(\d{2})-(\d{2})/;
+    my ($y, $m, $d) = $user->last_entry_date =~ m/(\d{4})-(\d{2})-(\d{2})/;
     my $dt = DateTime->new(
         year => $y,
         month => $m,

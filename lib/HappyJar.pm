@@ -2,7 +2,36 @@ package HappyJar;
 use Mojo::Base 'Mojolicious';
 use v5.10;
 
-# This method will run once at server start
+=head1 NAME
+
+HappyJar
+
+=head1 SYNOPSIS
+
+This is the main Mojolicious package for this application.
+
+=head1 DESCRIPTION
+
+A happy jar is a jar that one or more people put happy thoughts into, usually
+over the course of a whole year. These thoughts are kept secret until the end
+of the year, when they are revealed as a retrospective of the good things that
+happened.
+
+This is a digital version of that...it's running online at
+L<http://happyjar.herokuapp.com>, though unless you log in there's not much to
+look at.
+
+=head1 METHODS
+
+=over4
+
+=item startup
+
+This method is run once at server start, and sets application settings and
+routes.
+
+=cut
+
 sub startup {
     my $self = shift;
 
@@ -21,6 +50,14 @@ sub startup {
     $r->get('/error')->to('controller#error');
     $r->get('/contents')->to('controller#contents');
 }
+
+=item redirect_to_https
+
+Because the app sends passwords, we'll redirect everything on the live server
+to HTTPS. Developing locally this won't matter, so HTTP is fine. This is run
+as a hook before dispatching routes.
+
+=cut
 
 sub redirect_to_https {
     # gets the default controller as a parameter
@@ -53,3 +90,14 @@ sub redirect_to_https {
 }
 
 1;
+
+__END__
+
+=back
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2014 Michael McClimon
+
+Licensed under the same terms as Perl itself:
+L<http://www.perlfoundation.org/artistic_license_2_0>

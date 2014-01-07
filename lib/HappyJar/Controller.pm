@@ -6,7 +6,25 @@ use HappyJar::Database;
 use Try::Tiny;
 use DateTime;
 
-# This action will render a template
+=head1 NAME
+
+HappyJar::Controller
+
+=head1 SYNOPSIS
+
+The main controller class for the application.
+
+=head1 METHODS
+
+=over 4
+
+=item index
+
+Renders the index page after ensuring that user is logged in properly. This is
+the main page with the form used to create a new memory.
+
+=cut
+
 sub index {
     my $self = shift;
     my $user = $self->_ensure_logged_in();
@@ -32,8 +50,15 @@ sub index {
     $self->render();
 }
 
-# handles action for posting a new memory to the happy jar
-# gets params 'date' and 'memory'
+=item memory
+
+Handles the POST action for adding a new memory to the jar. Gets parameters
+'month', 'day', and 'memory' from POST, formats the date and calls
+L<HappyJar::Database> to insert the memory into the database. On success,
+redirects to C</success>.
+
+=cut
+
 sub memory {
     my $self = shift;
     my $user = $self->_ensure_logged_in();
@@ -50,11 +75,44 @@ sub memory {
     $self->redirect_to('/success');
 }
 
+=item memory_success
+
+Renders successful memory posting page.
+
+=cut
+
 sub memory_success { shift->render(); }
+
+=item error
+
+Renders error page (usually from a bad login) using the flash to get an error
+message.
+
+=cut
+
 sub error { shift->render(); }
+
+=item login
+
+Renders page with login form
+
+=cut
+
 sub login { shift->render(); }
 
-# gets two POST parameters: 'name' and 'password'
+=item handle_login
+
+Handles the POST to the login page. It gets two parameters, 'name' and
+'password' (in plain text) from POST, then calls into L<HappyJar::Auth> to
+authenticate them with users we have saved in the database.
+
+On success, sets a week-long cookie so that user doesn't need to log in again
+all the time. It then redirects to path in session variable C<redir> if it
+exists, and back out to the main index page if it doesn't. On failure,
+redirects to error page with a sane message.
+
+=cut
+
 sub handle_login {
     my $self = shift;
 
@@ -91,7 +149,16 @@ sub handle_login {
     };
 }
 
-# If it's still 2014, no dice. Otherwise print out a list of the memories.
+=item contents
+
+Renders page that shows a listing of all of the happy thoughts. This is a bit
+clever, though: if it's still 2014, we don't want to be able to get to the
+list (it's a sealed jar), so this will render a page with a snarky message. If
+it's not 2014 (in the new year, or if there happens to be a highly bizarre
+calendar event) this will render a table of all of the memories.
+
+=cut
+
 sub contents {
     my $self = shift;
 
@@ -106,8 +173,13 @@ sub contents {
     }
 }
 
-# If user is logged in, returns their user name. If not, redirects to
-# login page and sets a session variable 'redir' with the current path.
+=item _ensure_logged_in
+
+If user is logged in, returns their user name. If not, redirects to
+login page and sets a session variable 'redir' with the current path.
+
+=cut
+
 sub _ensure_logged_in {
     my $self = shift;
     my $user = $self->signed_cookie('user');
@@ -120,3 +192,15 @@ sub _ensure_logged_in {
 }
 
 1;
+
+
+__END__
+
+=back
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2014 Michael McClimon
+
+Licensed under the same terms as Perl itself:
+L<http://www.perlfoundation.org/artistic_license_2_0>

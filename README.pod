@@ -1,0 +1,31 @@
+=head1 HappyJar
+
+=head2 About
+
+This is a Mojolicious app to record happy thoughts for the year 2014. My copy
+is running on Heroku at L<https://happyjar.herokuapp.com>, but that probably
+won't be very useful unless you log in there. Feel free to take a look around.
+
+=head2 Running locally
+
+Provided you have
+L<cpanm|http://search.cpan.org/~miyagawa/App-cpanminus-1.7001/lib/App/cpanminus.pm>
+(and you should), you can get there with C<cpanm --install-deps>. Run with
+C<script/happy_jar>.
+
+If you have
+L<Carton|http://search.cpan.org/~miyagawa/Carton-v1.0.12/lib/Carton.pm>
+installed, a C<carton install> will also do it for you. If you go that route,
+C<carton exec script/happy_jar> will bring up a development server.
+
+For full connectivity, you'll want a Postgres DB up and running, and have a
+C<DATABASE_URL> in your environment. It will probably gripe at you if you
+don't.
+
+=head2 License/Contact
+
+Licensed under the same terms as Perl itself: see
+L<http://www.perlfoundation.org/artistic_license_2_0> for details. Contact me
+at L<michael@mcclimon.org>.
+
+

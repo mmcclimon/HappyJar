@@ -4,6 +4,10 @@ use strict;
 
 use DBI;
 
+=head1 NAME
+
+HappyJar::Database
+
 =head1 SUMMARY
 
 This package provides access to the database.
@@ -139,3 +143,14 @@ sub get_all_memories {
 
 
 1;
+
+__END__
+
+=back
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2014 Michael McClimon
+
+Licensed under the same terms as Perl itself:
+L<http://www.perlfoundation.org/artistic_license_2_0>

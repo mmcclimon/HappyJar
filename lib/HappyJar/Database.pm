@@ -141,6 +141,22 @@ sub get_all_memories {
     return $sth->fetchall_arrayref();
 }
 
+=item get_last_date_for
+
+Returns latest date for a given user initial ('m' or 'c').
+
+=cut
+
+sub get_last_date_for {
+    my ($self, $initial) = @_;
+    $self->connect();
+
+    my $sth = $dbh->prepare(q{SELECT MAX(date) FROM memories WHERE name = ?});
+    $sth->execute($initial);
+
+    return $sth->fetchrow_arrayref->[0];
+}
+
 
 1;
 

@@ -9,6 +9,8 @@ requires 'DBD::Pg', '1.3';
 # cli
 requires 'Term::ReadKey', '0';
 requires 'IO::Prompter', '0';
+requires 'Email::Sender', '1.3';
+requires 'Authen::SASL', '0';
 
 # misc.
 requires 'Moo', '1.0';

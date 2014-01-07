@@ -11,6 +11,27 @@ DISTRIBUTIONS
       POSIX 0
       Time::Local 0
       perl 5.008005
+  Authen-SASL-2.16
+    pathname: G/GB/GBARR/Authen-SASL-2.16.tar.gz
+    provides:
+      Authen::SASL 2.16
+      Authen::SASL::CRAM_MD5 2.14
+      Authen::SASL::EXTERNAL 2.14
+      Authen::SASL::Perl 2.14
+      Authen::SASL::Perl::ANONYMOUS 2.14
+      Authen::SASL::Perl::CRAM_MD5 2.14
+      Authen::SASL::Perl::DIGEST_MD5 2.14
+      Authen::SASL::Perl::EXTERNAL 2.14
+      Authen::SASL::Perl::GSSAPI 0.05
+      Authen::SASL::Perl::LOGIN 2.14
+      Authen::SASL::Perl::Layer 2.14
+      Authen::SASL::Perl::PLAIN 2.14
+    requirements:
+      Digest::HMAC_MD5 0
+      Digest::MD5 0
+      ExtUtils::MakeMaker 6.42
+      Test::More 0
+      perl 5.005
   B-Hooks-EndOfScope-0.12
     pathname: B/BO/BOBTFISH/B-Hooks-EndOfScope-0.12.tar.gz
     provides:
@@ -36,6 +57,20 @@ DISTRIBUTIONS
       Test::More 0
       parent 0
       perl 5.008001
+  Capture-Tiny-0.23
+    pathname: D/DA/DAGOLDEN/Capture-Tiny-0.23.tar.gz
+    provides:
+      Capture::Tiny 0.23
+    requirements:
+      Carp 0
+      Exporter 0
+      ExtUtils::MakeMaker 6.17
+      File::Spec 0
+      File::Temp 0
+      IO::Handle 0
+      Scalar::Util 0
+      strict 0
+      warnings 0
   Class-Inspector-1.28
     pathname: A/AD/ADAMK/Class-Inspector-1.28.tar.gz
     provides:
@@ -1234,6 +1269,17 @@ DISTRIBUTIONS
       Filter::Util::Call 0
       Test::More 0
       perl 5.008001
+  Digest-HMAC-1.03
+    pathname: G/GA/GAAS/Digest-HMAC-1.03.tar.gz
+    provides:
+      Digest::HMAC 1.03
+      Digest::HMAC_MD5 1.01
+      Digest::HMAC_SHA1 1.03
+    requirements:
+      Digest::MD5 2
+      Digest::SHA 1
+      ExtUtils::MakeMaker 0
+      perl 5.004
   Dist-CheckConflicts-0.10
     pathname: D/DO/DOY/Dist-CheckConflicts-0.10.tar.gz
     provides:
@@ -1245,6 +1291,114 @@ DISTRIBUTIONS
       List::MoreUtils 0.12
       Module::Runtime 0.009
       base 0
+      strict 0
+      warnings 0
+  Email-Abstract-3.007
+    pathname: R/RJ/RJBS/Email-Abstract-3.007.tar.gz
+    provides:
+      Email::Abstract 3.007
+      Email::Abstract::EmailMIME 3.007
+      Email::Abstract::EmailSimple 3.007
+      Email::Abstract::MIMEEntity 3.007
+      Email::Abstract::MailInternet 3.007
+      Email::Abstract::MailMessage 3.007
+      Email::Abstract::Plugin 3.007
+      Test::EmailAbstract undef
+    requirements:
+      Carp 0
+      Email::Simple 1.998
+      ExtUtils::MakeMaker 6.30
+      MRO::Compat 0
+      Module::Pluggable 1.5
+      Scalar::Util 0
+      strict 0
+      warnings 0
+  Email-Address-1.900
+    pathname: R/RJ/RJBS/Email-Address-1.900.tar.gz
+    provides:
+      Email::Address 1.900
+    requirements:
+      ExtUtils::MakeMaker 6.30
+      overload 0
+      strict 0
+      warnings 0
+  Email-Date-Format-1.004
+    pathname: R/RJ/RJBS/Email-Date-Format-1.004.tar.gz
+    provides:
+      Email::Date::Format 1.004
+    requirements:
+      Exporter 5.57
+      ExtUtils::MakeMaker 6.30
+      Time::Local 0
+      strict 0
+      warnings 0
+  Email-Sender-1.300006
+    pathname: R/RJ/RJBS/Email-Sender-1.300006.tar.gz
+    provides:
+      Email::Sender 1.300006
+      Email::Sender::Failure 1.300006
+      Email::Sender::Failure::Multi 1.300006
+      Email::Sender::Failure::Permanent 1.300006
+      Email::Sender::Failure::Temporary 1.300006
+      Email::Sender::Manual 1.300006
+      Email::Sender::Manual::QuickStart 1.300006
+      Email::Sender::Role::CommonSending 1.300006
+      Email::Sender::Role::HasMessage 1.300006
+      Email::Sender::Simple 1.300006
+      Email::Sender::Success 1.300006
+      Email::Sender::Success::Partial 1.300006
+      Email::Sender::Transport 1.300006
+      Email::Sender::Transport::DevNull 1.300006
+      Email::Sender::Transport::Failable 1.300006
+      Email::Sender::Transport::Maildir 1.300006
+      Email::Sender::Transport::Mbox 1.300006
+      Email::Sender::Transport::Print 1.300006
+      Email::Sender::Transport::SMTP 1.300006
+      Email::Sender::Transport::SMTP::Persistent 1.300006
+      Email::Sender::Transport::Sendmail 1.300006
+      Email::Sender::Transport::Test 1.300006
+      Email::Sender::Transport::Wrapper 1.300006
+      Email::Sender::Util 1.300006
+      Test::Email::SMTPRig undef
+      Test::Email::Sender::Transport::FailEvery undef
+      Test::Email::Sender::Util undef
+    requirements:
+      Capture::Tiny 0.08
+      Carp 0
+      Cwd 0
+      Email::Abstract 3
+      Email::Address 0
+      Email::Simple 1.998
+      ExtUtils::MakeMaker 6.30
+      Fcntl 0
+      File::Basename 0
+      File::Find 0
+      File::Path 0
+      File::Spec 0
+      File::Temp 0
+      FindBin 0
+      List::MoreUtils 0
+      Module::Runtime 0
+      Moo 1.000008
+      Moo::Role 0
+      MooX::Types::MooseLike 0.15
+      Net::SMTP 0
+      Scalar::Util 0
+      Sub::Exporter 0
+      Sys::Hostname 0
+      Test::More 0.96
+      Throwable::Error 0.200003
+      Try::Tiny 0
+  Email-Simple-2.202
+    pathname: R/RJ/RJBS/Email-Simple-2.202.tar.gz
+    provides:
+      Email::Simple 2.202
+      Email::Simple::Creator 2.202
+      Email::Simple::Header 2.202
+    requirements:
+      Carp 0
+      Email::Date::Format 0
+      ExtUtils::MakeMaker 6.30
       strict 0
       warnings 0
   Encode-Locale-1.03
@@ -1432,6 +1586,19 @@ DISTRIBUTIONS
       Contextual::Return 0
       ExtUtils::MakeMaker 0
       Test::More 0
+  IO-Socket-SSL-1.962
+    pathname: S/SU/SULLR/IO-Socket-SSL-1.962.tar.gz
+    provides:
+      IO::Socket::SSL 1.962
+      IO::Socket::SSL::Intercept 1.93
+      IO::Socket::SSL::SSL_Context 1.962
+      IO::Socket::SSL::SSL_HANDLE 1.962
+      IO::Socket::SSL::Session_Cache 1.962
+      IO::Socket::SSL::Utils 0.02
+    requirements:
+      ExtUtils::MakeMaker 0
+      Net::SSLeay 1.46
+      Scalar::Util 0
   Import-Into-1.002000
     pathname: H/HA/HAARG/Import-Into-1.002000.tar.gz
     provides:
@@ -1464,6 +1631,14 @@ DISTRIBUTIONS
       ExtUtils::MakeMaker 6.52
       Test::More 0.82
       perl 5.00503
+  MRO-Compat-0.12
+    pathname: B/BO/BOBTFISH/MRO-Compat-0.12.tar.gz
+    provides:
+      MRO::Compat 0.12
+    requirements:
+      ExtUtils::MakeMaker 6.59
+      Test::More 0.47
+      perl 5.006
   Module-Build-Tiny-0.030
     pathname: L/LE/LEONT/Module-Build-Tiny-0.030.tar.gz
     provides:
@@ -1504,6 +1679,18 @@ DISTRIBUTIONS
       Try::Tiny 0
       strict 0
       warnings 0
+  Module-Pluggable-5.1
+    pathname: S/SI/SIMONW/Module-Pluggable-5.1.tar.gz
+    provides:
+      Devel::InnerPackage 0.4
+      Module::Pluggable 5.1
+      Module::Pluggable::Object 5.1
+    requirements:
+      File::Basename 0
+      File::Spec 3.00
+      Module::Build 0.38
+      Test::More 0.62
+      if 0
   Module-Runtime-0.013
     pathname: Z/ZE/ZEFRAM/Module-Runtime-0.013.tar.gz
     provides:
@@ -1692,6 +1879,36 @@ DISTRIBUTIONS
       Role::Tiny 1.003002
       perl 5.008001
       strictures 1.004003
+  MooX-Types-MooseLike-0.25
+    pathname: M/MA/MATEU/MooX-Types-MooseLike-0.25.tar.gz
+    provides:
+      MooX::Types::MooseLike 0.25
+      MooX::Types::MooseLike::Base 0.25
+    requirements:
+      ExtUtils::MakeMaker 0
+      Module::Runtime 0.012
+      Moo 0.09101
+      Test::Fatal 0.003
+      Test::More 0.96
+  Net-SMTP-SSL-1.01
+    pathname: C/CW/CWEST/Net-SMTP-SSL-1.01.tar.gz
+    provides:
+      Net::SMTP::SSL 1.01
+    requirements:
+      ExtUtils::MakeMaker 0
+      IO::Socket::SSL 0
+      Net::SMTP 0
+      Test::More 0.47
+  Net-SSLeay-1.55
+    pathname: M/MI/MIKEM/Net-SSLeay-1.55.tar.gz
+    provides:
+      Net::SSLeay 1.55
+      Net::SSLeay::Handle 0.61
+    requirements:
+      ExtUtils::MakeMaker 6.36
+      MIME::Base64 0
+      Test::More 0.60_01
+      perl 5.005
   Package-Stash-0.36
     pathname: D/DO/DOY/Package-Stash-0.36.tar.gz
     provides:
@@ -1921,6 +2138,26 @@ DISTRIBUTIONS
       Stream::Buffered::PerlIO undef
     requirements:
       ExtUtils::MakeMaker 6.36
+  Sub-Exporter-0.987
+    pathname: R/RJ/RJBS/Sub-Exporter-0.987.tar.gz
+    provides:
+      Sub::Exporter 0.987
+      Sub::Exporter::Util 0.987
+      Test::SubExporter::DashSetup undef
+      Test::SubExporter::Faux undef
+      Test::SubExporter::GroupGen undef
+      Test::SubExporter::GroupGenSubclass undef
+      Test::SubExporter::ObjGen undef
+      Test::SubExporter::ObjGen::Obj undef
+      Test::SubExporter::s_e undef
+    requirements:
+      Carp 0
+      Data::OptList 0.100
+      ExtUtils::MakeMaker 6.30
+      Params::Util 0.14
+      Sub::Install 0.92
+      strict 0
+      warnings 0
   Sub-Exporter-Progressive-0.001011
     pathname: F/FR/FREW/Sub-Exporter-Progressive-0.001011.tar.gz
     provides:
@@ -2063,6 +2300,23 @@ DISTRIBUTIONS
       ExtUtils::Manifest 0
       Test::Builder 0.30
       Test::More 0.60
+  Throwable-0.200009
+    pathname: R/RJ/RJBS/Throwable-0.200009.tar.gz
+    provides:
+      StackTrace::Auto 0.200009
+      Throwable 0.200009
+      Throwable::Error 0.200009
+    requirements:
+      Carp 0
+      Class::Load 0.20
+      Devel::StackTrace 1.21
+      ExtUtils::MakeMaker 6.30
+      Moo 1.000001
+      Moo::Role 0
+      MooX::Types::MooseLike::Base 0
+      Scalar::Util 0
+      Sub::Quote 0
+      overload 0
   Try-Tiny-0.18
     pathname: D/DO/DOY/Try-Tiny-0.18.tar.gz
     provides:

@@ -114,9 +114,6 @@ sub insert_memory {
     my ($self, $user, $date, $memory) = @_;
     $self->connect();
 
-    # the database actually just wants the first character as the name
-    $user = substr $user, 0, 1;
-
     my $query = q{INSERT INTO memories (name, date, memory) VALUES (?, ?, ?)};
     my $sth = $dbh->prepare($query);
     $sth->execute($user, $date, $memory);
@@ -148,11 +145,11 @@ Returns latest date for a given user initial ('m' or 'c').
 =cut
 
 sub get_last_date_for {
-    my ($self, $initial) = @_;
+    my ($self, $name) = @_;
     $self->connect();
 
     my $sth = $dbh->prepare(q{SELECT MAX(date) FROM memories WHERE name = ?});
-    $sth->execute($initial);
+    $sth->execute($name);
 
     return $sth->fetchrow_arrayref->[0];
 }

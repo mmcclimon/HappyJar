@@ -57,8 +57,7 @@ sub get_user {
 # Returns number of days since param $user last submitted to happy jar.
 sub get_last_memory_delta {
     my $user = shift;
-    my $initial = substr($user->name, 0, 1);
-    my $date = $db->get_last_date_for($initial);
+    my $date = $db->get_last_date_for($user->name);
 
     # make a DateTime from the last date user posted
     my ($y, $m, $d) = $date =~ m/(\d{4})-(\d{2})-(\d{2})/;

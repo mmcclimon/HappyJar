@@ -21,7 +21,10 @@ my $emailer = HappyJar::Emailer->new();
 main();
 
 sub main {
+    print "Starting email script...\n";
     my @users = get_users();
+
+    my $num_emailed = 0;
 
     # loop through, sending email if needed
     for my $user (@users) {
@@ -34,8 +37,11 @@ sub main {
             my $subject = "A friendly note from the Happy Jar";
             my $msg = get_message($user->name, $delta);
             $emailer->send($user->email, $subject, $msg);
+            write_to_log($user);
+            $num_emailed++;
         }
     }
+    print "Finishing email script...emailed $num_emailed users.\n";
 }
 
 # Retrieve an array of HappyJar::User objects from the database.
@@ -92,6 +98,13 @@ http://happyjar.herokuapp.com
 Love,
 The Happy Jar Administration Team
 eof
+}
+
+# Write some stuff to STDOUT so we know what we sent
+sub write_to_log {
+    my ($user) = @_;
+    print "Attempted to email ${\$user->name} at ${\$user->email}, last " .
+            "submitted ${\$user->last_entry_date}.\n";
 }
 
 __END__

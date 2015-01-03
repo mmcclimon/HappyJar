@@ -48,7 +48,7 @@ sub startup {
     $r->post('/new')->to('controller#memory');
     $r->get('/success')->to('controller#memory_success');
     $r->get('/error')->to('controller#error');
-    $r->get('/contents')->to('controller#contents');
+    $r->get('/contents/:year' => [year => qr/20\d\d/])->to('controller#contents');
 }
 
 =item redirect_to_https

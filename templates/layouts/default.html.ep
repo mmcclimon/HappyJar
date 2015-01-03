@@ -11,7 +11,7 @@
   </head>
   <body>
 
-  <h1>The Happy Jar 2.0</h1>
+  <h1>The Happy Jar 2.015</h1>
   <%= content %>
   </body>
 </html>

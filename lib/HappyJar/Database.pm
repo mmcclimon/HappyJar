@@ -16,6 +16,7 @@ This package provides access to the database.
 
 # Variables
 my $dbh;        # database handle
+my $currentYear;
 
 =head2 METHODS
 
@@ -62,6 +63,9 @@ sub connect {
         AutoCommit => 1,
         pg_enable_utf8 => 1,
     });
+
+    # set the current year, for use later
+    $currentYear = (localtime())[5] + 1900;
 }
 
 =item get_user_data_for
@@ -86,18 +90,19 @@ sub get_user_data_for {
     return $data->{name}, $data->{email}, $data->{password};
 }
 
-=item get_num_memories
+=item get_num_memories_this_year
 
-Returns the number of memories in the database.
+Returns the number of memories in the database for the current year.
 
 =cut
 
-sub get_num_memories {
+sub get_num_memories_this_year {
     my $self = shift;
     $self->connect();
 
-    my $query = q{SELECT COUNT(*) FROM memories};
+    my $query = q{SELECT COUNT(*) FROM memories WHERE date >= ?};
     my $sth = $dbh->prepare($query);
+    $sth->bind_param(1, "$currentYear-01-01");
     $sth->execute();
 
     return $sth->fetchrow_arrayref->[0];
@@ -122,18 +127,23 @@ sub insert_memory {
     return $memory;
 }
 
-=item get_all_memories
+=item get_all_memories_for_year
 
-Retrieves all memories from database and returns the whole thing and returns
-them all in a big arrayref, with columns 'name', 'date', and 'memory'.
+Retrieves all memories from database for a given year and returns the whole
+thing and returns them all in a big arrayref, with columns 'name', 'date', and
+'memory'.
 
 =cut
 
-sub get_all_memories {
+sub get_all_memories_for_year {
     my $self = shift;
+    my ($year) = @_;
     $self->connect();
 
-    my $sth = $dbh->prepare(q{SELECT name, date, memory FROM memories});
+    my $query = q{SELECT name, date, memory FROM memories WHERE (date >= ? AND date < ?)};
+    my $sth = $dbh->prepare($query);
+    $sth->bind_param(1, "$year-01-01");
+    $sth->bind_param(2, ($year + 1) . "-01-01");
     $sth->execute();
 
     return $sth->fetchall_arrayref();

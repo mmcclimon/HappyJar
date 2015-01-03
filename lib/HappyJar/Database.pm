@@ -60,6 +60,7 @@ sub connect {
     $dbh = DBI->connect($conn_string, $user, $pass, {
         RaiseError => 1,
         AutoCommit => 1,
+        pg_enable_utf8 => 1,
     });
 }
 

@@ -1,7 +1,13 @@
 % layout 'default';
 % title 'Happy Jar';
 
-<p>Hooray! A whole year of happy thoughts!<p>
+% if (scalar @{$memories} == 0) {
+
+    <p>No happy thoughts found for <%= $year %>.</p>
+
+% } else {
+
+<p>Hooray! A whole year of happy thoughts for <%= $year %>!<p>
 
 <table>
     % for my $row (@{$memories}) {
@@ -13,5 +19,6 @@
     % }
 </table>
 
-<p><a href="/">Back home</a></p>
+% }
 
+<p><a href="/">Back home</a></p>

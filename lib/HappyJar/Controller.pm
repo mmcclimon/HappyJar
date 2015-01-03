@@ -29,7 +29,7 @@ sub index {
     my $self = shift;
     my $user = $self->_ensure_logged_in();
 
-    my $num_memories = HappyJar::Database->get_num_memories();
+    my $num_memories = HappyJar::Database->get_num_memories_this_year();
 
     # figure out the month and day, used in select_field helpers
     my @months = (

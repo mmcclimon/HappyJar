@@ -66,8 +66,8 @@ sub memory {
     my ($month, $day, $memory) = $self->param(['month', 'day', 'memory']);
 
     # format date: yyyy-mm-dd
-    my $date = DateTime->new(year => 2014, month => $month, day => $day,
-        time_zone => 'America/Indianapolis')->ymd;
+    my $date = DateTime->new(year => $self->_current_year(), month => $month,
+        day => $day, time_zone => 'America/Indianapolis')->ymd;
 
     $memory = HappyJar::Database->insert_memory($user, $date, $memory);
 
@@ -162,12 +162,13 @@ calendar event) this will render a table of all of the memories.
 sub contents {
     my $self = shift;
 
-    my $year = (localtime)[5] + 1900;
+    my $yearWanted = $self->stash('year');
+    my $currentYear = $self->_current_year();
 
-    if ($year == 2014) {
+    if ($yearWanted == $currentYear) {
         $self->render(template => 'controller/not_yet');
     } else {
-        my $memories = HappyJar::Database->get_all_memories();
+        my $memories = HappyJar::Database->get_all_memories_for_year($yearWanted);
         $self->stash(memories => $memories);
         $self->render(template => 'controller/contents');
     }
@@ -189,6 +190,16 @@ sub _ensure_logged_in {
 
     $self->session(redir => $path);
     $self->redirect_to('/login');
+}
+
+=item _current_year
+
+Returns current year.
+
+=cut
+
+sub _current_year {
+    return (localtime())[5] + 1900;
 }
 
 1;

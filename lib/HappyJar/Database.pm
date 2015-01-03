@@ -127,18 +127,23 @@ sub insert_memory {
     return $memory;
 }
 
-=item get_all_memories
+=item get_all_memories_for_year
 
-Retrieves all memories from database and returns the whole thing and returns
-them all in a big arrayref, with columns 'name', 'date', and 'memory'.
+Retrieves all memories from database for a given year and returns the whole
+thing and returns them all in a big arrayref, with columns 'name', 'date', and
+'memory'.
 
 =cut
 
-sub get_all_memories {
+sub get_all_memories_for_year {
     my $self = shift;
+    my ($year) = @_;
     $self->connect();
 
-    my $sth = $dbh->prepare(q{SELECT name, date, memory FROM memories});
+    my $query = q{SELECT name, date, memory FROM memories WHERE (date >= ? AND date < ?)};
+    my $sth = $dbh->prepare($query);
+    $sth->bind_param(1, "$year-01-01");
+    $sth->bind_param(2, ($year + 1) . "-01-01");
     $sth->execute();
 
     return $sth->fetchall_arrayref();

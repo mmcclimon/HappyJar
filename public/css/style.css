@@ -1,15 +1,20 @@
 @import url(//fonts.googleapis.com/css?family=Monda:400);
 @import url(//fonts.googleapis.com/css?family=Paprika);
 
-body { background-color: #E0F2F7; }
+body { background-color: #086a87; color: #f0f0f0; }
 
 body, form, select, option {
     font-family: 'Monda', Helvetica, Arial, sans-serif;
 }
 
+a, a:visited {
+    color: #81DAF5;
+}
+
 textarea {
     font-family: 'Monda', Helvetica, Arial, sans-serif;
     font-size: 110%;
+    margin-right: 8px;
 }
 
 input[type='text'], input[type='password'] {
@@ -31,17 +36,9 @@ table, tr, td {
 }
 
 .button {
-    -moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;
-    -webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;
-    box-shadow:inset 0px 1px 0px 0px #97c4fe;
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0) );
-    background:-moz-linear-gradient( center top, #3d94f6 5%, #1e62d0 100% );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0');
-    background-color:#3d94f6;
-    -moz-border-radius:11px;
-    -webkit-border-radius:11px;
+    background-color: #b01800;
     border-radius:11px;
-    border:1px solid #337fed;
+    border:1px solid #871200;
     display:inline-block;
     color:#ffffff;
     font-family: Monda, 'Trebuchet MS', Helvetica, Arial, sans-serif;
@@ -50,12 +47,8 @@ table, tr, td {
     padding:14px 24px;
     text-decoration:none;
 }.button:hover {
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #1e62d0), color-stop(1, #3d94f6) );
-    background:-moz-linear-gradient( center top, #1e62d0 5%, #3d94f6 100% );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e62d0', endColorstr='#3d94f6');
-    background-color:#1e62d0;
+    background-color:#871200;
 }.button:active {
     position:relative;
     top:1px;
 }
-

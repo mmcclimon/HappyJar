@@ -1,30 +1,27 @@
 /*
- * DropKick 2.0.2
+ * DropKick 2.1.3
  *
  * Highly customizable <select> lists
  * https://github.com/robdel12/DropKick
  *
 */
 
+// Enable indexOf, forEach, and EventListener methods for IE
+(function(){if(Array.prototype.indexOf||(Array.prototype.indexOf=function(a,b){var c,d,e=b?b:0;if(!this)throw new TypeError;if(d=this.length,0===d||e>=d)return-1;for(0>e&&(e=d-Math.abs(e)),c=e;d>c;c++)if(this[c]===a)return c;return-1}),Array.prototype.forEach||(Array.prototype.forEach=function(a){if(void 0===this||null===this)throw new TypeError;var b=Object(this),c=b.length>>>0;if("function"!=typeof a)throw new TypeError;for(var d=arguments.length>=2?arguments[1]:void 0,e=0;c>e;e++)e in b&&a.call(d,b[e],e,b)}),Event.prototype.preventDefault||(Event.prototype.preventDefault=function(){this.returnValue=!1}),Event.prototype.stopPropagation||(Event.prototype.stopPropagation=function(){this.cancelBubble=!0}),!Element.prototype.addEventListener){var a=[],b=function(b,c){var d=this,e=function(a){a.target=a.srcElement,a.currentTarget=d,c.handleEvent?c.handleEvent(a):c.call(d,a)};if("DOMContentLoaded"==b){var f=function(a){"complete"==document.readyState&&e(a)};if(document.attachEvent("onreadystatechange",f),a.push({object:this,type:b,listener:c,wrapper:f}),"complete"==document.readyState){var g=new Event;g.srcElement=window,f(g)}}else this.attachEvent("on"+b,e),a.push({object:this,type:b,listener:c,wrapper:e})},c=function(b,c){for(var d=0;d<a.length;){var e=a[d];if(e.object==this&&e.type==b&&e.listener==c){"DOMContentLoaded"==b?this.detachEvent("onreadystatechange",e.wrapper):this.detachEvent("on"+b,e.wrapper);break}++d}};Element.prototype.addEventListener=b,Element.prototype.removeEventListener=c,HTMLDocument&&(HTMLDocument.prototype.addEventListener=b,HTMLDocument.prototype.removeEventListener=c),Window&&(Window.prototype.addEventListener=b,Window.prototype.removeEventListener=c)} function CustomEvent(e,t){t=t||{bubbles:false,cancelable:false,detail:undefined};var n=document.createEvent("CustomEvent");n.initCustomEvent(e,t.bubbles,t.cancelable,t.detail);return n}CustomEvent.prototype=window.Event.prototype;window.CustomEvent=CustomEvent;})();
+
 (function( window, document, undefined ) {
 
-window.isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test( navigator.userAgent );
-window.isIframe = (window.parent != window.self && location.host === parent.location.host);
 
 var
 
-  // Cache of DK Objects
-  dkCache = {},
-  dkIndex = 0,
+  // Browser testing stuff
+  isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test( navigator.userAgent ),
+  isIframe = (window.parent != window.self && location.host === parent.location.host),
+  isIE = navigator.appVersion.indexOf("MSIE")!=-1,
 
   // The Dropkick Object
   Dropkick = function( sel, opts ) {
-    var i;
-
-    // Prevent DK on mobile
-    if ( window.isMobile && !opts.mobile ) {
-      return false;
-    }
+    var i, dk;
 
     // Safety if `Dropkick` is called without `new`
     if ( this === window ) {
@@ -36,9 +33,13 @@ var
     }
 
     // Check if select has already been DK'd and return the DK Object
-    if ( i = sel.getAttribute( "data-dkcacheid" ) ) {
-      _.extend( dkCache[ i ].data.settings, opts );
-      return dkCache[ i ];
+    for ( i = 0; i < Dropkick.uid; i++) {
+      dk = Dropkick.cache[ i ];
+
+      if ( dk instanceof Dropkick && dk.data.select === sel ) {
+        _.extend( dk.data.settings, opts );
+        return dk;
+      }
     }
 
     if ( sel.nodeName === "SELECT" ) {
@@ -47,6 +48,7 @@ var
   },
 
   noop = function() {},
+  _docListener,
 
   // DK default options
   defaults = {
@@ -103,12 +105,14 @@ var
     // Returns the top and left offset of an element
     offset: function( elem ) {
       var box = elem.getBoundingClientRect() || { top: 0, left: 0 },
-        docElem = document.documentElement;
+        docElem = document.documentElement,
+        offsetTop = isIE ? docElem.scrollTop : window.pageYOffset,
+        offsetLeft = isIE ? docElem.scrollLeft : window.pageXOffset;
 
-      return {
-        top: box.top + window.pageYOffset - docElem.clientTop,
-        left: box.left + window.pageXOffset - docElem.clientLeft
-      };
+        return {
+          top: box.top + offsetTop - docElem.clientTop,
+          left: box.left + offsetLeft - docElem.clientLeft
+        };
     },
 
     // Returns the top and left position of an element relative to an ancestor
@@ -150,8 +154,25 @@ var
       }
 
       return node;
+    },
+
+    deferred: function( fn ) {
+      return function() {
+        var args = arguments,
+          ctx = this;
+
+        window.setTimeout(function() {
+          fn.apply(ctx, args);
+        }, 1);
+      };
     }
+
   };
+
+
+// Cache of DK Objects
+Dropkick.cache = {}
+Dropkick.uid = 0;
 
 
 // Extends the DK objects's Prototype
@@ -246,7 +267,7 @@ Dropkick.prototype = {
    */
   init: function( sel, opts ) {
     var i,
-      dk =  Dropkick.build( sel, "dk" + dkIndex );
+      dk =  Dropkick.build( sel, "dk" + Dropkick.uid );
 
     // Set some data on the DK Object
     this.data = {};
@@ -264,41 +285,54 @@ Dropkick.prototype = {
     this.selectedOptions = dk.selected.slice( 0 );
     this.value = sel.value;
 
-    // Insert the DK element before the original select
-    sel.parentNode.insertBefore( this.data.elem, sel );
-
-    // Bind events
-    this.data.elem.addEventListener( "click", this );
-    this.data.elem.addEventListener( "keydown", this );
-    this.data.elem.addEventListener( "keypress", this );
-
-    if ( this.form ) {
-      this.form.addEventListener( "reset", this );
-    }
-
-    if ( !this.multiple ) {
-      for ( i = 0; i < this.options.length; i++ ) {
-        this.options[ i ].addEventListener( "mouseover", this );
-      }
-    }
-
-    if ( dkIndex === 0 ) {
-      document.addEventListener( "click", Dropkick.onDocClick );
-      if ( window.isIframe ){
-        parent.document.addEventListener( "click", Dropkick.onDocClick );
-      }
-    }
-
     // Add the DK Object to the cache
-    this.data.cacheID = dkIndex;
-    sel.setAttribute( "data-dkCacheId", this.data.cacheID );
-    dkCache[ this.data.cacheID ] = this;
+    this.data.cacheID = Dropkick.uid;
+    Dropkick.cache[ this.data.cacheID ] = this;
 
     // Call the optional initialize function
     this.data.settings.initialize.call( this );
 
     // Increment the index
-    dkIndex += 1;
+    Dropkick.uid += 1;
+
+    // Add the change listener to the select
+    if ( !this._changeListener ) {
+      sel.addEventListener( "change", this );
+      this._changeListener = true;
+    }
+
+    // Don't continue if we're not rendering on mobile
+    if ( !( isMobile && !this.data.settings.mobile ) ) {
+
+      // Insert the DK element before the original select
+      sel.parentNode.insertBefore( this.data.elem, sel );
+      sel.setAttribute( "data-dkCacheId", this.data.cacheID );
+
+      // Bind events
+      this.data.elem.addEventListener( "click", this );
+      this.data.elem.addEventListener( "keydown", this );
+      this.data.elem.addEventListener( "keypress", this );
+
+      if ( this.form ) {
+        this.form.addEventListener( "reset", this );
+      }
+
+      if ( !this.multiple ) {
+        for ( i = 0; i < this.options.length; i++ ) {
+          this.options[ i ].addEventListener( "mouseover", this );
+        }
+      }
+
+      if ( !_docListener ) {
+        document.addEventListener( "click", Dropkick.onDocClick );
+
+        if ( isIframe ){
+          parent.document.addEventListener( "click", Dropkick.onDocClick );
+        }
+
+        _docListener = true;
+      }
+    }
 
     return this;
   },
@@ -307,7 +341,8 @@ Dropkick.prototype = {
    * Closes the DK dropdown
    */
   close: function() {
-    var dk = this.data.elem;
+    var i,
+      dk = this.data.elem;
 
     if ( !this.isOpen || this.multiple ) {
       return false;
@@ -328,12 +363,18 @@ Dropkick.prototype = {
   /**
    * Opens the DK dropdown
    */
-  open: function() {
-    var dropHeight, above, below,
+  open: _.deferred(function() {
+    var dropHeight, above, below, direction, dkTop, dkBottom,
       dk = this.data.elem,
-      dkOptsList = dk.lastChild,
-      dkTop = _.offset( dk ).top - window.scrollY,
-      dkBottom = window.innerHeight - ( dkTop + dk.offsetHeight );
+      dkOptsList = dk.lastChild;
+
+    if ( isIE ) {
+      dkTop = _.offset( dk ).top - document.documentElement.scrollTop;
+    } else {
+      dkTop = _.offset( dk ).top - window.scrollY;
+    }
+
+    dkBottom = window.innerHeight - ( dkTop + dk.offsetHeight );
 
     if ( this.isOpen || this.multiple ) return false;
 
@@ -352,7 +393,7 @@ Dropkick.prototype = {
     this._scrollTo( this.selectedIndex );
 
     this.data.settings.open.call( this );
-  },
+  }),
 
   /**
    * Disables or enables an option or the entire Dropkick
@@ -362,14 +403,14 @@ Dropkick.prototype = {
   disable: function( elem, disabled ) {
     var disabledClass = "dk-option-disabled";
 
-    if ( arguments.length == 0 || typeof elem === "boolean" ) {
+    if ( arguments.length === 0 || typeof elem === "boolean" ) {
       disabled = elem === undefined ? true : false;
       elem = this.data.elem;
       disabledClass = "dk-select-disabled";
       this.disabled = disabled;
     }
 
-    if ( disabled == undefined ) {
+    if ( disabled === undefined ) {
       disabled = true;
     }
 
@@ -397,14 +438,16 @@ Dropkick.prototype = {
     if ( typeof elem === "string" ) {
       for ( i = 0; i < this.length; i++ ) {
         if ( this.options[ i ].getAttribute( "data-value" ) == elem ) {
-          elem = this.options[ i ];          
-        } else {
-          return false;
+          elem = this.options[ i ];
         }
       }
     }
 
-    if ( !disabled && _.hasClass( elem, "dk-option-disabled" ) ) return false;
+    // No element or enabled option
+    if ( !elem || typeof elem === "string" ||
+         ( !disabled && _.hasClass( elem, "dk-option-disabled" ) ) ) {
+      return false;
+    }
 
     if ( _.hasClass( elem, "dk-option" ) ) {
       index = this.options.indexOf( elem );
@@ -434,6 +477,7 @@ Dropkick.prototype = {
         elem.setAttribute( "aria-selected", "true" );
 
         combobox.setAttribute( "aria-activedescendant", elem.id );
+        combobox.className = "dk-selected " + option.className;
         combobox.innerHTML = option.text;
 
         this.selectedOptions[0] = elem;
@@ -442,7 +486,10 @@ Dropkick.prototype = {
 
       this.selectedIndex = select.selectedIndex;
       this.value = select.value;
-      this.data.settings.change.call( this );
+
+      if ( !disabled ) {
+        this.data.select.dispatchEvent( new CustomEvent( "change" ) );
+      }
 
       return elem;
     }
@@ -523,6 +570,15 @@ Dropkick.prototype = {
   },
 
   /**
+   * Brings focus to the proper DK element
+   */
+  focus: function() {
+    if ( !this.disabled ) {
+      ( this.multiple ? this.data.elem : this.data.elem.children[0] ).focus();
+    }
+  },
+
+  /**
    * Resets the DK and select element
    * @param  {Boolean} clear Defaults to first option if True
    */
@@ -558,7 +614,7 @@ Dropkick.prototype = {
    * Removes the DK Object from the cache and the element from the DOM
    */
   dispose: function() {
-    delete dkCache[ this.data.cachID ];
+    delete Dropkick.cache[ this.data.cacheID ];
     this.data.elem.parentNode.removeChild( this.data.elem );
     this.data.select.removeAttribute( "data-dkCacheId" );
     return this;
@@ -584,6 +640,9 @@ Dropkick.prototype = {
       break;
     case "reset":
       this.reset();
+      break;
+    case "change":
+      this.data.settings.change.call( this );
       break;
     }
   },
@@ -643,7 +702,7 @@ Dropkick.prototype = {
   },
 
   _keyHandler: function( event ) {
-    var lastSelected,
+    var lastSelected, j,
       selected = this.selectedOptions,
       options = this.options,
       i = 1,
@@ -663,6 +722,17 @@ Dropkick.prototype = {
     case keys.down:
       event.preventDefault();
       lastSelected = selected[ selected.length - 1 ];
+
+      if ( _.hasClass( this.data.elem.lastChild, "dk-select-options-highlight" ) ) {
+        _.removeClass( this.data.elem.lastChild, "dk-select-options-highlight" );
+        for ( j = 0; j < options.length; j++ ) {
+          if ( _.hasClass( options[ j ], "dk-option-highlight" ) ) {
+            _.removeClass( options[ j ], "dk-option-highlight" );
+            lastSelected = options[ j ];
+          }
+        }
+      }
+
       i = options.indexOf( lastSelected ) + i;
 
       if ( i > options.length - 1 ) {
@@ -736,7 +806,8 @@ Dropkick.prototype = {
     var optPos, optTop, optBottom,
       dkOpts = this.data.elem.lastChild;
 
-    if ( !this.isOpen && !this.multiple ) {
+    if ( option === -1 || ( typeof option !== "number" && !option ) ||
+        ( !this.isOpen && !this.multiple ) ) {
       return false;
     }
 
@@ -765,7 +836,7 @@ Dropkick.prototype = {
  * @return {Object}   An object containing the new DK element and it's options
  */
 Dropkick.build = function( sel, idpre ) {
-  var optList, i,
+  var selOpt, optList, i,
     options = [],
 
     ret = {
@@ -781,7 +852,7 @@ Dropkick.build = function( sel, idpre ) {
       switch ( node.nodeName ) {
       case "OPTION":
         option = _.create( "li", {
-          "class": "dk-option",
+          "class": "dk-option ",
           "data-value": node.value,
           "innerHTML": node.text,
           "role": "option",
@@ -815,7 +886,7 @@ Dropkick.build = function( sel, idpre ) {
         }
 
         optgroupList = _.create( "ul", {
-          "class": "dk-optgroup-options",
+          "class": "dk-optgroup-options"
         });
 
         for ( i = node.children.length; i--; children.unshift( node.children[ i ] ) );
@@ -841,10 +912,11 @@ Dropkick.build = function( sel, idpre ) {
   _.addClass( ret.elem, sel.className );
 
   if ( !sel.multiple ) {
+    selOpt = sel.options[ sel.selectedIndex ];
     ret.elem.appendChild( _.create( "div", {
-      "class": "dk-selected",
+      "class": "dk-selected " + selOpt.className,
       "tabindex": sel.tabindex || 0,
-      "innerHTML": sel.options[ sel.selectedIndex ].text,
+      "innerHTML": selOpt ? selOpt.text : '&nbsp;',
       "id": idpre + "-combobox",
       "aria-live": "assertive",
       "aria-owns": optList.id,
@@ -868,15 +940,19 @@ Dropkick.build = function( sel, idpre ) {
 Dropkick.onDocClick = function( event ) {
   var t, tId, i;
 
-  if ( t = document.getElementById( event.target.htmlFor ) ) {
-    if ( ( tId = t.getAttribute( "data-dkcacheid" ) ) !== null ) {
-      dkCache[ tId ].data.elem.focus();
-    }
+  if (event.target.nodeType !== 1) {
+    isClicked = false;
+
+    return false;
   }
 
-  for ( i in dkCache ) {
-    if ( !_.closest( event.target, dkCache[ i ].data.elem ) ) {
-      dkCache[ i ].disabled || dkCache[ i ].close();
+  if ( ( tId = event.target.getAttribute( "data-dkcacheid" ) ) !== null ) {
+    Dropkick.cache[ tId ].focus();
+  }
+
+  for ( i in Dropkick.cache ) {
+    if ( !_.closest( event.target, Dropkick.cache[ i ].data.elem ) && i !== tId ) {
+      Dropkick.cache[ i ].disabled || Dropkick.cache[ i ].close();
     }
   }
 };
@@ -884,5 +960,19 @@ Dropkick.onDocClick = function( event ) {
 
 // Expose Dropkick Globally
 window.Dropkick = Dropkick;
+
+// Add jQuery method
+if ( window.jQuery !== undefined ) {
+  window.jQuery.fn.dropkick = function () {
+    var args = Array.prototype.slice.call( arguments );
+    return window.jQuery( this ).each(function() {
+      if ( !args[0] || typeof args[0] === 'object' ) {
+        new Dropkick( this, args[0] || {} );
+      } else if ( typeof args[0] === 'string' ) {
+        Dropkick.prototype[ args[0] ].apply( new Dropkick( this ), args.slice( 1 ) );
+      }
+    });
+  };
+}
 
 })( window, document );

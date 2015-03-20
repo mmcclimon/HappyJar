@@ -52,3 +52,10 @@ table, tr, td {
     position:relative;
     top:1px;
 }
+
+.dk-select {
+    color: #999 !important;
+}
+.dk-selected {
+    color: #000 !important;
+}

@@ -140,7 +140,10 @@ sub get_all_memories_for_year {
     my ($year) = @_;
     $self->connect();
 
-    my $query = q{SELECT name, date, memory FROM memories WHERE (date >= ? AND date < ?)};
+    my $query = q{
+        SELECT name, date, memory FROM memories
+        WHERE (date >= ? AND date < ?)
+        ORDER BY date ASC};
     my $sth = $dbh->prepare($query);
     $sth->bind_param(1, "$year-01-01");
     $sth->bind_param(2, ($year + 1) . "-01-01");

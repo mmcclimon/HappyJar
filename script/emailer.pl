@@ -88,7 +88,7 @@ sub get_message {
     $name = ucfirst $name;
 
     my $msg = <<eof;
-Hello there $name!
+Hi $name!
 
 It looks like you've been remiss in your happy-jarring...it's been more than
 $num_days days! Please put something in or our happy jar will be sadly empty.
@@ -115,4 +115,3 @@ Copyright 2014 Michael McClimon
 
 Licensed under the same terms as Perl itself:
 L<http://www.perlfoundation.org/artistic_license_2_0>
-

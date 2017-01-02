@@ -52,7 +52,7 @@ sub send {
     my $email = Email::Simple->create(
         header => [
             To      => $address,
-            From    => 'Happy Jar <noreply@mcclimon.org',
+            From    => 'Happy Jar <noreply@mcclimon.org>',
             Subject => $subject,
         ],
         body => "$msg\n",
@@ -73,4 +73,3 @@ Copyright 2014 Michael McClimon
 
 Licensed under the same terms as Perl itself:
 L<http://www.perlfoundation.org/artistic_license_2_0>
-

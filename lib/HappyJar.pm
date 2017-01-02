@@ -97,7 +97,7 @@ __END__
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2014 Michael McClimon
+Copyright 2014-2017 Michael McClimon
 
 Licensed under the same terms as Perl itself:
 L<http://www.perlfoundation.org/artistic_license_2_0>

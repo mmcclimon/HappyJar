@@ -13,7 +13,7 @@
   </head>
   <body>
 
-  <h1>The Happy Jar 2.016</h1>
+  <h1>The Happy Jar 2.017</h1>
   <%= content %>
   </body>
 </html>

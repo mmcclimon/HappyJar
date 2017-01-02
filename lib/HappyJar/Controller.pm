@@ -152,10 +152,11 @@ sub handle_login {
 =item contents
 
 Renders page that shows a listing of all of the happy thoughts. This is a bit
-clever, though: if it's still 2014, we don't want to be able to get to the
-list (it's a sealed jar), so this will render a page with a snarky message. If
-it's not 2014 (in the new year, or if there happens to be a highly bizarre
-calendar event) this will render a table of all of the memories.
+clever, though: if it's still the current year, we don't want to be able to
+get to the list (it's a sealed jar), so this will render a page with a snarky
+message. If it's not the current year (in the new year, or if there happens to
+be a highly bizarre calendar event) this will render a table of all of the
+memories.
 
 =cut
 

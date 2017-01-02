@@ -1,7 +1,7 @@
 @import url(//fonts.googleapis.com/css?family=Monda:400);
 @import url(//fonts.googleapis.com/css?family=Paprika);
 
-body { background-color: #057405; color: #f0f0f0; }
+body { background-color: #705375; color: #f0f0f0; }
 
 body, form, select, option {
     font-family: 'Monda', Helvetica, Arial, sans-serif;
@@ -36,9 +36,9 @@ table, tr, td {
 }
 
 .button {
-    background-color: #0194db;
+    background-color: #8ba171;
     border-radius:11px;
-    border:1px solid #006ec1;
+    border:1px solid #46b42f;
     display:inline-block;
     color:#ffffff;
     font-family: Monda, 'Trebuchet MS', Helvetica, Arial, sans-serif;
@@ -47,7 +47,7 @@ table, tr, td {
     padding:14px 24px;
     text-decoration:none;
 }.button:hover {
-    background-color:#871200;
+    background-color:#6c8451;
 }.button:active {
     position:relative;
     top:1px;

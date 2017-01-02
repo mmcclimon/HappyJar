@@ -40,7 +40,9 @@ sub index {
     my @days = (1..31);
 
     # add selected attributes
-    my ($mday, $month) = (localtime(time))[3..4];
+    my $dt = DateTime->now(time_zone => 'America/Indianapolis');
+    my $month = $dt->month();
+    my $mday = $dt->day();
     push @{$months[$month]}, 'selected' => 'selected';
     $days[$mday - 1] = [$mday => $mday, 'selected' => 'selected'];
 

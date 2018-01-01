@@ -2,25 +2,14 @@
 
 =head2 About
 
-This is a Mojolicious app to record happy thoughts for the year 2014. My copy
-is running on Heroku at L<https://happyjar.herokuapp.com>, but that probably
-won't be very useful unless you log in there. Feel free to take a look around.
+This is a dumb Mojolicious app I wrote a long time ago to record happy
+thoughts for the year, and then review them at the end of the year. It runs on
+Heroku.
 
-=head2 Running locally
+If I were writing it from scratch, I'd do a lot of things differently.
+But...the code still runs, and is almost completely maintenance-free, so I'm
+happy just to update it once a year and let it keep running.
 
-Provided you have
-L<cpanm|http://search.cpan.org/~miyagawa/App-cpanminus-1.7001/lib/App/cpanminus.pm>
-(and you should), you can get there with C<cpanm --install-deps>. Run with
-C<script/happy_jar>.
-
-If you have
-L<Carton|http://search.cpan.org/~miyagawa/Carton-v1.0.12/lib/Carton.pm>
-installed, a C<carton install> will also do it for you. If you go that route,
-C<carton exec script/happy_jar> will bring up a development server.
-
-For full connectivity, you'll want a Postgres DB up and running, and have a
-C<DATABASE_URL> in your environment. It will probably gripe at you if you
-don't.
 
 =head2 License/Contact
 

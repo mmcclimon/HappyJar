@@ -69,7 +69,7 @@ sub memory {
 
     # format date: yyyy-mm-dd
     my $date = DateTime->new(year => $self->_current_year(), month => $month,
-        day => $day, time_zone => 'America/Indianapolis')->ymd;
+        day => $day, time_zone => 'America/New_York')->ymd;
 
     $memory = HappyJar::Database->insert_memory($user, $date, $memory);
 
